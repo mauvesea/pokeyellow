@@ -780,7 +780,7 @@ FaintEnemyPokemon:
 	decoord 12, 6
 	call SlideDownFaintedMonPic
 	hlcoord 0, 0
-	lb bc, 4, 11
+	lb bc, 5, 11
 	call ClearScreenArea
 	ld a, [wIsInBattle]
 	dec a
@@ -1451,7 +1451,7 @@ EnemySendOutFirstMon:
 .next4
 	call ClearSprites
 	hlcoord 0, 0
-	lb bc, 4, 11
+	lb bc, 5, 11
 	call ClearScreenArea
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
@@ -1950,9 +1950,11 @@ DrawEnemyHUDAndHPBar:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 0, 0
-	lb bc, 4, 12
+	lb bc, 5, 12
 	call ClearScreenArea
-	callfar PlaceEnemyHUDTiles
+	callfar PlaceEnemyHUDTilesBattle
+	hlcoord 1, 2
+	ld [hl], $73
 	ld de, wEnemyMonNick
 	hlcoord 1, 0
 	call CenterMonName
@@ -2032,6 +2034,16 @@ DrawEnemyHUDAndHPBar:
 	ld [wHPBarType], a
 	hlcoord 2, 2
 	call DrawHPBar
+	ld bc, SCREEN_WIDTH + 1 ; below bar
+	add hl, bc
+	ld de, wEnemyMonHP
+	lb bc, 2, 3
+	call PrintNumber
+	ld a, "/"
+	ld [hli], a
+	ld de, wEnemyMonMaxHP
+	lb bc, 2, 3
+	call PrintNumber
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld hl, wEnemyHPBarColor

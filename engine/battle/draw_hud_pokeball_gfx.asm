@@ -167,6 +167,15 @@ PlaceHUDTiles:
 	ld [hl], a
 	ret
 
+PlaceEnemyHUDTilesBattle:
+	ld hl, EnemyBattleHUDGraphicsTiles
+	ld de, wHUDGraphicsTiles
+	ld bc, $3
+	call CopyData
+	hlcoord 1, 3
+	ld de, $1
+	jr PlaceHUDTiles
+
 SetupPlayerAndEnemyPokeballs:
 	call LoadPartyPokeballGfx
 	ld hl, wPartyMons
